@@ -6,22 +6,22 @@ Para o projeto final, você irá conduzir sua própria análise exploratória de
 
 A análise deve ser formatada como uma série de pontos que agregará conhecimento, onde perguntas serão realizadas, visualizações serão criadas e você irá explorar os dados.
 
-Este projeto é "aberto" no sentido de que não estamos buscando uma resposta certa. Como John Tukey disse, "A combinação de dados com o desejo de encontrar uma resposta não nos garante que a resposta possa ser extraída dos dados". Nós queremos que você investigue questões interessantes sobre os dados e estamos te dando a chance de realizar tal exploração. Nós vamos dar algumas opções de conjuntos de dados a explorar, contudo, você pode escolher um conjunto de dados completamente diferente dos propostos. Saiba que encontrar seu próprio conjunto de dados, realizar sua limpeza e transformá-lo no formato requisitado pelo R pode tomar tempo e esforço consideráveis. Isso poderá adicionar um dia, semana, ou até mesmo meses no tempo do seu projeto, então se aventure a trabalhar com conjuntos de dados diferentes de acordo com suas habilidades de programação e manipulação de dados.
+Este projeto é "aberto" no sentido de que não estamos buscando uma resposta certa. Como John Tukey disse, "A combinação de dados com o desejo de encontrar uma resposta não nos garante que a resposta possa ser extraída dos dados". Nós queremos que você investigue questões interessantes sobre os dados e estamos te dando a chance de realizar tal exploração. Nós vamos dar algumas [opções de conjuntos de dados](https://docs.google.com/document/d/1jX3vzkFuFOBGUrlcQ_Lc3jEZVlC_2yyk3tFIbwAI5GQ/edit?usp=sharing) a explorar, contudo, você pode escolher um conjunto de dados completamente diferente dos propostos. Saiba que encontrar seu próprio conjunto de dados, realizar sua limpeza e transformá-lo no formato requisitado pelo R pode tomar tempo e esforço consideráveis. Isso poderá adicionar um dia, semana, ou até mesmo meses no tempo do seu projeto, então se aventure a trabalhar com conjuntos de dados diferentes de acordo com suas habilidades de programação e manipulação de dados.
 
 Agora, vamos aos detalhes!
 
 ### Primeira etapa - Escolha seu conjunto de dados
-Primeiro, escolha um conjunto de dados do documento Opções de Conjuntos de Dados. Você pode escolher um conjunto de dados baseado-se nas suas experiências em programação e manipulação de dados. O conjunto de dados não impacta na sua chance de ser aprovado no projeto final. No geral, conjuntos de dados formatados são mais fáceis de trabalhar uma vez que cada variável é uma coluna e cada linha é uma observação, e logo, não existem etapas de limpeza e formatação dos dados envolvidas na análise. Nós oferecemos dicas logo abaixo para auxiliar na escolha de um conjunto de dados. As estimativas de tempo incluem a leitura de todas as instruções do projeto e rubrica, condução da análise e submissão do projeto final.
+Primeiro, escolha um conjunto de dados do documento Opções de Conjuntos de Dados. Você pode escolher um conjunto de dados baseado-se nas suas experiências em programação e manipulação de dados. O conjunto de dados não impacta na sua chance de ser aprovado no projeto final. No geral, [conjuntos de dados formatados](http://vita.had.co.nz/papers/tidy-data.pdf) são mais fáceis de trabalhar uma vez que cada variável é uma coluna e cada linha é uma observação, e logo, não existem etapas de limpeza e formatação dos dados envolvidas na análise. Nós oferecemos dicas logo abaixo para auxiliar na escolha de um conjunto de dados. As estimativas de tempo incluem a leitura de todas as instruções do projeto e rubrica, condução da análise e submissão do projeto final.
 
 ### Segunda etapa - Organize-se
 Eventualmente, você irá enviar seu projeto (e compartilhá-lo com amigos, família e empregadores). Organize-se antes de começar. Nós recomendamos que você crie uma pasta no seu computador que irá conter:
 
-O arquivo RMD que contém a análise, gráficos finais e sumário, e a reflexão (nesta ordem)
-O arquivo HTML que será obtido do seu arquivo RMD
-O conjunto de dados que você usou (que será enviado apenas se você está usando seu próprio conjunto de dados)
+1. O arquivo RMD que contém a análise, gráficos finais e sumário, e a reflexão (nesta ordem)
+2. O arquivo HTML que será obtido do seu arquivo RMD
+3. O conjunto de dados que você usou (que será enviado apenas se você está usando seu próprio conjunto de dados)
 
 ### Terceira etapa - Explore os dados
-Esta é a parte divertida. Comece a explorar os dados! Tome notas de seus pensamentos durante este processo (em um arquivo RMD). Por favor veja o Projeto Exemplo que fornecemos. Seu relatório deve ficar parecido com este!
+Esta é a parte divertida. Comece a explorar os dados! Tome notas de seus pensamentos durante este processo (em um arquivo RMD). Por favor veja o [Projeto Exemplo](https://s3.amazonaws.com/content.udacity-data.com/courses/ud651/diamondsExample_2016-05.html) que fornecemos. Seu relatório deve ficar parecido com este!
 
 ### Quarta etapa - Documente sua análise
 Você irá documentar sua exploração e análise em um arquivo RMD que deverá ser enviado. Este arquivo deverá estar formatado usando Markdown e deve conter (na seguinte ordem):
