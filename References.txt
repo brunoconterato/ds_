@@ -1,0 +1,8 @@
+https://www.rdocumentation.org/packages/GGally/versions/1.4.0/topics/ggpairs
+http://environmentalcomputing.net/plotting-with-ggplot-colours-and-symbols/
+https://ggobi.github.io/ggally/rd.html#gglegend
+https://stackoverflow.com/questions/47969912/generalised-matrix-scatterplots-in-ggplot2
+Other Stackoverflow questions
+http://sape.inf.usi.ch/quick-reference/ggplot2/colour
+https://www.datanovia.com/en/blog/ggplot-colors-best-tricks-you-will-love/
+https://ggplot2.tidyverse.org/reference/scale_gradient.html

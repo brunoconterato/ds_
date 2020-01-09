@@ -1,0 +1,469 @@
+White Wine Quality por Bruno Henrique Conterato
+========================================================
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
+# Carregue aqui todos os pacotes utilizados 
+# na sua análise realizada neste arquivo fonte.
+
+# Note que o parâmetro "echo" foi definido como FALSE neste código.
+# Isso previne que o código apresente resultados formatados em HTML.
+# Você deve definir echo=FALSE para todos os blocos de código no seu arquivo.
+
+library(ggplot2)
+library(GGally)
+library(zoom)
+library(dplyr)
+library(gridExtra)
+library(reshape2)
+library(devtools)
+library(ggbiplot)
+```
+
+```{r echo=FALSE, Load_the_Data}
+# Carregamento dos dados
+wineData <- read.csv("wineQualityWhites.csv") 
+```
+
+# Seção de Gráficos Univariados
+
+```{r echo=FALSE, Univariate_Plots}
+summary(wineData)
+```
+
+```{r echo=FALSE}
+summary(wineData$quality)
+
+qplot(x = quality, data = wineData, fill=I('#099DD9'), color = I('black'), binwidth = 1) +
+  coord_cartesian(xlim = c(3, 9)) +
+  scale_x_continuous(breaks=3:9)
+```
+```{r echo=FALSE}
+summary(wineData$fixed.acidity)
+
+p1 <- qplot(x = fixed.acidity, data = wineData, binwidth = 0.1, fill=I('#099DD9'), color = I('black')) +
+  scale_x_continuous(breaks = c(4:10), limits = c(4,11))
+
+p2 <- p1  + facet_wrap(~quality, scale = "free")
+
+grid.arrange(p1, p2, ncol = 1)
+```
+```{r echo=FALSE}
+summary(wineData$volatile.acidity)
+
+p1 <- qplot(x = volatile.acidity, data = wineData, binwidth = 0.01, fill=I('#099DD9'), color = I('black')) +
+  scale_x_continuous(breaks = seq(0.0,0.8,0.1), limits = c(0.0,0.8))
+
+p2 <- p1  + facet_wrap(~quality, scale = "free")
+
+grid.arrange(p1, p2, ncol = 1)
+```
+```{r echo=FALSE}
+summary(wineData$citric.acid)
+
+p1 <- qplot(x = citric.acid, data = wineData, binwidth = 0.01, fill=I('#099DD9'), color = I('black')) +
+  scale_x_continuous(breaks = seq(0.0, 1, 0.1), limits = c(0.0, 1))
+
+p2 <- p1  + facet_wrap(~quality, scale = "free")
+
+grid.arrange(p1, p2, ncol = 1)
+```
+```{r echo=FALSE}
+summary(wineData$residual.sugar)
+
+p1 <- qplot(x = residual.sugar, data = wineData, binwidth = 0.05, fill=I('#099DD9'), color = I('black')) +
+  scale_x_log10(limits = c(1, 30))
+
+p2 <- p1 + facet_wrap(~quality, scale = "free")
+
+grid.arrange(p1, p2, ncol = 1)
+```
+```{r echo=FALSE}
+summary(wineData$chlorides)
+
+p1 <- qplot(x = chlorides, data = wineData, binwidth = 0.001, fill=I('#099DD9'), color = I('black')) +
+  scale_x_continuous(limits = c(0.0, 0.1))
+
+p2 <- p1  + facet_wrap(~quality, scale = "free")
+
+grid.arrange(p1, p2, ncol = 1)
+```
+```{r echo=FALSE}
+summary(wineData$free.sulfur.dioxide)
+
+p1 <- qplot(x = free.sulfur.dioxide, data = wineData, binwidth = 1, fill=I('#099DD9'), color = I('black')) +
+  scale_x_continuous(limits = c(0, 100))
+
+p2 <- p1  + facet_wrap(~quality, scale = "free")
+
+grid.arrange(p1, p2, ncol = 1)
+```
+```{r echo=FALSE}
+summary(wineData$total.sulfur.dioxide)
+
+p1 <- qplot(x = total.sulfur.dioxide, data = wineData, binwidth = 5, fill=I('#099DD9'), color = I('black')) +
+  scale_x_continuous(limits = c(0, 300))
+
+p2 <- p1  + facet_wrap(~quality, scale = "free")
+
+grid.arrange(p1, p2, ncol = 1)
+```
+```{r echo=FALSE}
+summary(wineData$density)
+
+p1 <- qplot(x = density, data = wineData, binwidth = 0.0001, fill=I('#099DD9'), color = I('black')) +
+  scale_x_continuous(limits=c(0.988, 1.001))
+
+p2 <- p1  + facet_wrap(~quality, scale = "free")
+
+grid.arrange(p1, p2, ncol = 1)
+```
+```{r echo=FALSE}
+summary(wineData$pH)
+
+p1 <- qplot(x = pH, data = wineData, binwidth = 0.01, fill=I('#099DD9'), color = I('black'))
+
+p2 <- p1  + facet_wrap(~quality, scale = "free")
+
+grid.arrange(p1, p2, ncol = 1)
+```
+```{r echo=FALSE}
+summary(wineData$sulphates)
+
+p1 <- qplot(x = sulphates, data = wineData, binwidth = 0.01, fill=I('#099DD9'), color = I('black')) +
+  scale_x_continuous(limits = c(0.2, 1))
+
+p2 <- p1  + facet_wrap(~quality, scale = "free")
+
+grid.arrange(p1, p2, ncol = 1)
+```
+```{r echo=FALSE}
+summary(wineData$alcohol)
+
+p1 <- qplot(x = alcohol, data = wineData, binwidth = 0.1, fill=I('#099DD9'), color = I('black'))
+
+p2 <- p1  + facet_wrap(~quality, scale = "free")
+
+grid.arrange(p1, p2, ncol = 1)
+```
+
+# Análise Univariada
+
+### Qual é a estrutura do conjunto de dados?
+Nosso conjunto de dados tem 13 variáveis em 4898 observações.
+Como se vê:
+
+```{r}
+str(wineData)
+```
+
+Todas as variáveis são números reais, exceto X (o índice do vinho, variando de 1 a 4898) e A qualidade do vinho atestada pelos especialistas (na amostra vaira de 3 a 9). Essas variáveis representam algumas concentrações químicas de determinadas substâncias além do pH e do teor alcóolico.
+
+### Quais são os principais atributos de interesse deste conjunto de dados?
+Os principais atributos são o índice X — identificando o próprio vinho que está em análise — e a qualidade — atributo mais determinante para o valor comercial e a popularidade do vinho, talvez o único fator relevante para a maioria dos consumidores (leigos).
+
+### Quais outros atributos você acha que podem lhe auxiliar na investigação destes atributos de interesse?
+Os atributos do conjunto de dados:
+```{r}
+names(wineData)
+```
+Acredito que os mais importantes para determinar a qualidade do vinho — analisando os face_wraps — sejam pH, alcool, densidade e ácido cítrico (já que percebe-se maior diferença entre esses os gráficos com relação à qualidade). Talvez possamos fazer um modelo preditivo baseado nesses 3 fatores e 1 ou 2 outros fatores adicionais.
+
+### Você criou novas variáveis a partir dos atributos existentes no conjunto de dados?
+Novas variáveis não foram criadas.
+
+### Dos atributos investigados, distribuições incomuns foram encontradas? Você aplicou operações nos dados para limpá-los, ajustá-los ou mudar a forma dos dados? Se sim, por quê?
+Apliquei operação de transformação logarítimica no açúcar residual, porque o gráfico mostrou distribuição exponencial negativa nessa variável.
+
+Além disso, quase todos os gráficos (exceto qualidade, ph e álcool) tiveram valores extremos extraídos do alcance do gráfico, a fim de concentrar a análise na porção mais central da amostra para todas as características, e melhorar a visualização dos dados centrais:
+
+fixed.acidity -> eliminados extremos (menores que 4, maiores que 11)
+volitile.acidity -> eliminados extremos (maioers que 0.8)
+citric.acid -> eliminados outliers (maiores que 1.0)
+residual.sugar -> eliminados outliers (maiores que 30)
+chlorides -> eliminados extremos (maiores que 0.1)
+free.sulfur.dioxide -> eliminados extremos e outliers (maiores que 100)
+total.sulfur.dioxide -> eliminados extremos e outliers (maiores que 300)
+total.sulfur.dioxide -> eliminados extremos e outliers (menores que 0.988 e maiores que 1.001)
+total.sulfur.dioxide -> eliminados extremos e outliers (menores que 2.7 e maiores que 3.7)
+sulphates -> eliminados extremos (menores que 0.2 e maiores que 1.0)
+
+# Seção de Gráficos Bivariados
+
+Vamos olhar a matrix scatter procurando por correlações nos dados
+
+```{r echo=FALSE, Bivariate_Plots}
+#Help from https://stackoverflow.com/questions/47969912/generalised-matrix-scatterplots-in-ggplot2
+ggpairs(wineData, columns = 2:13, progress = F,
+        lower = list(continuous = wrap("points")))
+#zm()
+```
+
+Verificamos as seguintes correlaçoes, positivas ou negativas, iguais ou superiores a 0.3 em magnitude:
+- Açúcar residual e densidade (0.839)
+- Densidade e álcool (-0.78)
+- Dióxido de enxofre total e dióxido de enxofre livre (0.616)
+- Densidade e dióxido de enxofre total (0.53)
+- Álcool e açúcar residual (-0.451)
+- Álcool e dióxido de enxofre total (-0.449)
+- Álcool e qualidade (0.436) *Uma de nossas suspeitas iniciais!
+- ph e acidez fixa (-0.426)
+- Dióxido de enxofre total e açúcar residual (0.401)
+- Densidade e qualidade (-0.307) *Outra das nossas suspeitas iniciais!
+
+Primeiramente, vamos analisar a relação entre açúcar residual e densidade, tida como a mais forte correlação dos  nossos dados:
+
+```{r echo=FALSE}
+ggplot(aes(x = residual.sugar, y = density), data = wineData) +
+  geom_point(alpha = 1/10, position = position_jitter()) +
+  coord_cartesian(xlim = c(0, 22),ylim = c(0.985, 1.005)) +
+  geom_smooth(method = 'lm', color = 'red') +
+  annotate(x=2, y=1.005, 
+         label=paste("Corr:", round(cor(wineData$residual.sugar, wineData$density), 3)), 
+         geom="text", size=5)
+```
+Podemos verificar graficamente a correlação entre açúcar residual e densidade.
+
+Vamos também verificar a correlação entre densidade e álcool:
+
+```{r echo=FALSE}
+ggplot(aes(x = alcohol, y = density), data = wineData) +
+  geom_point(alpha = 1/10) +
+  ylim(0.99, 1.002) +
+  geom_smooth(method = 'lm', color = 'red') +
+  annotate(x=12, y=1.001, 
+         label=paste("Corr:", round(cor(wineData$alcohol, wineData$density), 3)), 
+         geom="text", size=5)
+```
+Nota-se a correlação negativa entre densidade e álcool.
+
+Vamos especialmente trabalhar a esperada relação entre álcool e qualidade:
+
+```{r echo=FALSE}
+ggplot(aes(x = alcohol, y = quality), data = wineData) +
+  geom_point(alpha = 1/10, position = position_jitter(width = 0.3, height = 0.3)) +
+  xlim(quantile(wineData$alcohol, 0.1), quantile(wineData$alcohol, 0.9)) +
+  geom_smooth(method = 'lm', color = 'red') +
+  annotate(x=9.5, y=9, 
+         label=paste("Corr:", round(cor(wineData$alcohol, wineData$quality), 3)), 
+         geom="text", size=5)
+```
+No gráfico acima, podemos observar pela coloração mais escura que existe uma correlação entre maioers quantidades de álcool e maior qualidade.
+
+Vamos analisar o boxplot:
+
+```{r echo=FALSE}
+wineData$alcohol.category = cut(wineData$alcohol, 
+                   breaks=c(-Inf, 8, 10, 12, 14, Inf), 
+                   labels=c("very low", "low", "middle", "high", "very high"))
+
+qplot(x = alcohol.category, y = quality, data = wineData,
+      geom = 'boxplot')
+```
+```{r echo=FALSE}
+by(wineData$quality, wineData$alcohol.category, summary)
+```
+
+Podemos observar que quantidades maiores de alcool costumam implicar mais qualidade.
+
+Vamos fazer o mesmo entre densidade e qualidade:
+
+```{r echo=FALSE}
+p1 <- ggplot(aes(x = density, y = quality), data = wineData) +
+  geom_point(alpha = 1/10, position = position_jitter(width = 0.002, height = 0.3)) +
+  xlim(quantile(wineData$density, 0.01), quantile(wineData$density, 0.99)) +
+  geom_smooth(method = 'lm', color = 'red') +
+  annotate(x=.991, y=2, 
+         label=paste("Corr:", round(cor(wineData$density, wineData$quality), 3)), 
+         geom="text", size=5)
+
+wineData$density.category = cut(wineData$density, 
+                   breaks=c(-Inf, 0.9900, 0.9930, 0.9960, 0.9990, Inf), 
+                   labels=c("very low", "low", "middle", "high", "very high"))
+
+p2 <- qplot(x = density.category, y = quality, data = wineData,
+      geom = 'boxplot') + coord_cartesian(ylim = c(4, 8))
+
+by(wineData$quality, wineData$density.category, summary)
+
+grid.arrange(p1, p2, ncol=2)
+```
+Podemos observar que quantidades maiores de densidade costumam implicar mais qualidade.
+
+# Análise Bivariada
+
+### Discuta sobre alguns dos relacionamentos observados nesta parte da investigação. Como os atributos de interesse variaram no conjunto de dados?
+
+Vamos discutir as seguintes relações:
+
+1. As duas correlaçoes mais fortes:
+- Açúcar residual e densidade (0.839)
+- Densidade e álcool (-0.78)
+
+2. As duas correlaçoes mais importantes para a qualidade do vinho:
+- Álcool e qualidade (0.436)
+- Densidade e qualidade (-0.307)
+
+1.1. Açúcar residual x densidade
+Nota-se uma correlação positiva de 0.839. Dado que densidade = massa / volume, a quantidade mais elevada de açúcar pode ter efeito de aumentar a massa do vinho proporcionalmente mais do que aumenta o volume, provocando uma tendência de aumentar a densidade.
+
+1.2. Densidade x álcool
+Nota-se correlação negativa de magnitude 0.78. Razoável, haja vista a densidade do álcool (789 kg/m³) ser menor que a da água (997 kg/m³), valores extraídos da wikipedia em 13/08/2019. Valores mais elevados de álcool portanto devem influenciar negativamente na densidade.
+
+2.1. Álcool x qualidade
+Nota-se uma correlação positiva de 0.436.
+Dividindo os vinhos em categorias quanto ä quantidade de álcool, e plotando o gráfico de dispersão, notamos que quanto mais álcool, maior tende a ser a qualidade percebida do vinho.
+
+2.2 Densidade e qualidade
+Nota-se uma correlação negativa de magnitude 0.307. Pelo gráfico de dispersão perceboms a relação decrescente entre aumento de densidade e redução da qualidade.
+
+Obs.: Juntando-se as relações 1.2, 2.1 e 2.2, pode-se observar que talvez um dos fatores — alcool e densidade — tenham grande influência um no outro, e portanto não tenha influência significativa na qualidade do vinho! Por se tratar de uma bebida alcóolica, e também pela diferença de densidade entre água e álcool, eu arriscaria o palpite de que o álcool influencia mais a qualidade do produto do que a densidade, já que a densidade sofre grande influência da quantidade de álcool.
+
+
+### Você observou algum relacionamento interessante entre os outros atributos (os que não são de interesse)?
+Além dos relacionamentos discutidos acima, foram encontradas algumas outras correlações (todas as maiores que 0.3 estão listadas no início dos gráficos bivariados, e todas as relações estão calculadas na matris de dispersão apresentada). Uma interessante é a correlação negativa entre ph e acidez fixa (-0.426). O que pode ser considerado uma relação esperada, haja vista o pH ser um indicador químico de acidez, menor pH indicando maior acidez da mistura.
+
+### Qual foi o relacionamento mais forte encontrado?
+O relacionamento mais forte encontrado foi entre Açúcar residual e densidade, discutido acima.
+
+
+# Seção de Gráficos Multivariados
+
+Vamos criar a coluna bestquality na Tabela. Essa coluna armazena o valor 1 se a qualidade do vvinho for 7 ou 8, 0 caso contrário.
+```{r echo=FALSE, Multivariate_Plots}
+wineData$bestquality <- ifelse(wineData$quality>7, 1, 0)
+```
+
+```{r echo=FALSE}
+ggplot(aes(x = pH, y = quality), data = wineData) +
+  geom_point(aes(color = wineData$alcohol), position = position_jitter()) +
+  xlab(aes(title = "pH"))  +
+  ylab(aes(title = "Fator de qualidade"))
+```
+Esse gráfico nos mostra que há uma relação entre a qualidade, o pH e à quantidade de álcool Qualidades superiores geralmente são alcançadas com mais álcool, pH um pouco maior. A maior presença de pontos azuis claros na parte de cima são evidência da relaçao entre álcool e qualiadde. Além disso, os pontos azuis claros estão um pouco mais ao centro quando se olha na horizontal, evidenciando essa região (pH entre 3.1 e 3.3) como sendo maisdeterminante. A relação, contudo, é fraca.
+
+```{r echo=FALSE}
+ggplot(aes(x = alcohol, y = quality), data = wineData) +
+  geom_point(aes(color = wineData$citric.acid), position = position_jitter()) +
+  xlab(aes(title = "Álcool (% volume)"))  +
+  ylab(aes(title = "Fator de qualidade")) +
+  scale_colour_gradientn(colours=c("red","blue","black"), name = "Ácido cítrico")
+```
+```{r echo=FALSE}
+ggplot(aes(x = alcohol.category, y = quality), data = wineData) +
+  geom_point(aes(color = wineData$citric.acid), position = position_jitter()) +
+  xlab(aes(title = "Álcool (categoria)"))  +
+  ylab(aes(title = "Fator de qualidade")) +
+  scale_colour_gradient(low = "orange", high = "black", name = 'Ácido cítrico')
+```
+Os gráficos acima tentam relacionar álcool à qualidade e ao ácido cítrico. Aparentemente o ácido cítrico tem pouca influência, comparado ao álcool. Neste último pode-se verificar pontos pretos em diversos locais do gráfico, bem como pontos alaranjados mais claros e mais escuros, aparentemente de forma caótica. O mesmo se verifica com os pontos coloridos do gráfico de cima.
+
+```{r echo=FALSE}
+ggplot(aes(x = alcohol, y = residual.sugar), data = wineData) +
+  geom_point(aes(color = as.factor(wineData$bestquality))) + ylim(0, 20) +
+  xlab(aes(title = "Álcool (% volume)"))  +
+  ylab(aes(title = "Açúcar residual (g/L)")) +
+  scale_colour_discrete(name = "Qualidade", labels=c("Até 7","8 ou 9"))
+```
+Comprova-se acima novamente a influência de mais álcool, pouca influência do açúcar residual.
+
+```{r echo=FALSE}
+ggplot(aes(x = total.sulfur.dioxide, y = alcohol), data = wineData) +
+  geom_point(aes(color = as.factor(wineData$bestquality)), position = position_jitter()) +
+  xlab(aes(title = "Dióxido de enxofre total (g/L)"))  +
+  ylab(aes(title = "Álcool (% volume)")) +
+  xlim(50, 250) +
+  scale_colour_discrete(name = "Qualidade", labels=c("Até 7","8 ou 9"))
+```
+
+Realmente nota-se que vinhos de maior qualidade São mais frequentes entre aqueles com mais álcool (pontos azuis claros aumentam quando olhamos mais para cima do gráfico). E vinhos de menor qualidade são mais numerosos entre vinhos com menos álcool (pontos azuis escuros concentram-se mais na parte de baixo). Menor influência para o fator dióxido de enxofre total.
+
+# Análise Multivariada
+
+### Discuta sobre os relacionamentos observados nesta parte da investigação. Quais atributos que fortaleceram os demais na observação das variáveis de interesse?
+Nesta parte da investigação, mantivemos a hipótese de que o álcool é um dos principais fatores responsáveis pela qualidade. O pH também tem influência, porem menos que o álcool. Outros fatores (como o ácido cítrico) geralmente pouco influenciam quando analisados em conjunto.
+
+### Interações surpreendentes e/ou interessantes foram encontradas entre os atributos?
+Aparentemente alguns dos atributos parecem não ter grande influência na qualidade. O ácido cítrico, por exemplo, mostrado nos gráficos acima, não mostra grande influência nem combinado com quantidade maior de álcool.
+
+### OPCIONAL: Modelos foram criados usando este conjunto de dados? Discuta sobre os pontos fortes e as limitações do seu modelo.
+
+------
+
+# Gráficos Finais e Sumário
+
+### Primeiro Gráfico
+```{r echo=FALSE, Plot_One}
+ggplot(aes(x = quality, y = alcohol), data = wineData) +
+  geom_point(alpha = 1/10, position = position_jitter(width = 0.15, height = 0.15)) +
+  ylab(aes(title = "Álcool (% volume)")) +
+  xlab(aes(title = "Fator de Qualidade"))  +
+  xlim(3,9) +
+  geom_smooth(method = 'lm', color = 'red') +
+  annotate(x=9.5, y=9, 
+         label=paste("Corr:", round(cor(wineData$alcohol, wineData$quality), 3)), 
+         geom="text", size=5) +
+  labs(title = "Influência do álcool no fator de qualidade")
+```
+
+### Descrição do Primeiro Gráfico
+Relação de correlação positivamente orientada entre álcool e a qualidade do vinho. O álcool provou ser o fator com mais influência na determinação da qualidade do Vinho. Note que mais álcool se correlaciona a vinhos melhores.
+
+### Segundo Gráfico
+```{r echo=FALSE, Plot_Two}
+ggplot(aes(x = citric.acid, y = free.sulfur.dioxide), data = wineData) +
+  geom_point(aes(color = as.factor(wineData$bestquality)), position = position_jitter()) +
+  xlab(aes(title = "Ácido cítrico (g/L)")) +
+  ylab(aes(title = "Dióxido de enxofre livre (g/L)")) +
+  xlim(0, 0.6) +ylim(0, 90) +
+  scale_colour_discrete(name = "Qualidade", labels=c("Até 7","8 ou 9")) +
+  labs(title = "Baixa correlação entre Dióxido de enxofre e Ácido cítrico para a Qualidade")
+```
+
+### Descrição do Segundo Gráfico
+Gráfico mostrando a baixa correlação entre ácido cítrico e dióxido de enxofre livre para a determinação da qualidade. Note a quantidade de pontos azuis claros distribuídos de forma aparentemente caótica pelo gráfico.
+
+### Terceiro Gráfico
+```{r echo=FALSE, Plot_Three}
+ggplot(aes(x = alcohol, y = density), data = wineData) +
+  geom_point(aes(color = as.factor(wineData$bestquality)), stat = 'summary') +
+  xlab(aes(title = "Álcool (% volume)")) +
+  ylab(aes(title = "Densidade (g/cm^3)")) +
+  scale_colour_discrete(name = "Qualidade", labels=c("Até 7","8 ou 9")) +
+  ylim(0.99, 1.002) +
+  geom_smooth(method = 'lm', color = 'red') +
+  annotate(x=12, y=1.001, 
+         label=paste("Corr:", round(cor(wineData$alcohol, wineData$density), 3)), 
+         geom="text", size=5) +
+  theme(legend.position="bottom") +
+  labs(title = "Correlação entre Densidade e Álcool")
+```
+
+### Descrição do Terceiro Gráfico
+Correlação negativa entre densidade e alcohol (já esperada, conforme discutimos na análise bivariada). Evidenciamos também maior concentração de pontos azuis (vinhos melhores) em mais baixas densidades e maiores volumes alcoólicos.
+------
+
+# Reflexão
+Durante a exploração dos dados, foi bastante rápido e evidente que o álcool se tratava do fator mais importante para determinação da qualidade. Já no histograma dividido pela qualidade (gráficos univariados) foi possível notar que a distribuição parece deslocar para a direita na medida em que passamos a analisar maior qualidade, indicando uma correlação positiva. A análise bivariada confirmou essa relação, enquanto a matriz de dispersão provou que realmente era a maior das correlações.
+
+Com excessão do álcool e da densidade, foi difícil procurar por outras relações. Tentei vários gráficos procurando influência forte de outros fatores (alguns estão na seção de gráficos multivariados), mas a distribuição de vinhos pela qualidade parecia caótica. Concluí, portanto, que realmente a maioria desses fatores tem relevãncia baixa.
+
+# Algumas referências
+https://www.rdocumentation.org/packages/GGally/versions/1.4.0/topics/ggpairs
+
+http://environmentalcomputing.net/plotting-with-ggplot-colours-and-symbols/
+
+https://ggobi.github.io/ggally/rd.html#gglegend
+
+https://stackoverflow.com/questions/47969912/generalised-matrix-scatterplots-in-ggplot2
+
+Other Stackoverflow questions
+
+http://sape.inf.usi.ch/quick-reference/ggplot2/colour
+
+https://www.datanovia.com/en/blog/ggplot-colors-best-tricks-you-will-love/
+
+https://ggplot2.tidyverse.org/reference/scale_gradient.html
+
+http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+
+https://www.datanovia.com/en/blog/ggplot-title-subtitle-and-caption/
