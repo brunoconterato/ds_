@@ -1,4 +1,4 @@
-#@ Visão geral do projeto
+## Visão geral do projeto
 Neste projeto, você irá usar o R e aplicar técnicas de análise exploratória de dados para verificar relações em uma ou mais variáveis e explorar um conjunto de dados específico para encontrar distribuições, outliers e anomalias.
 
 Prepare-se para este projeto com: Análise de Dados com R.
